@@ -32,8 +32,6 @@
 @if (isset($task) && $task == "edit")
     <label for="image">Imagen</label>
     <input type="file" name="image">
-@else
-    
 @endif
 <br>
 <button type="submit">Enviar</button>

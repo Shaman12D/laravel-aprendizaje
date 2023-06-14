@@ -14,9 +14,9 @@
     @else
         Es false
     @endif
-    </br>
-    {{ $name }} </br>
-    {{ $age }} </br>
+    <br>
+    {{ $name }} <br>
+    {{ $age }} <br>
     {!! $html !!}
     {{-- $age --}}
 
