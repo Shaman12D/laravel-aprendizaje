@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\Category_controller;
-use App\Http\Controllers\Dashboard\PostController;
-use App\Http\Controllers\Dashboard\TestController2 as DashboardTestController2;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,18 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/',[TestController::class,'test']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/',[DashboardTestController2::class,'index']); //Ruta por la cual va dirigida la dirección url
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('post', PostController::class);
-Route::resource('category', Category_controller::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Route::get('post', [PostController::class,'index']);
-// Route::get('post/{post}', [PostController::class,'show']);
-// Route::get('post/create', [PostController::class,'create']);
-// Route::get('post/{post}', [PostController::class,'edit']);
-
-// Route::post('post', [PostController::class,'store']);
-// Route::put('post/{post}', [PostController::class,'update']);
-// Route::delete('post/{post}', [PostController::class,'delete']);
+require __DIR__.'/auth.php';

@@ -11,6 +11,8 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     </head>
     <body>
-        {{ $user->email }}
+        <x-guest-layout>
+            <h1 class="p-6 text-gray-900 dark:text-gray-100">Has cerrado sesión</h1>
+        </x-guest-layout>
     </body>
 </html>
