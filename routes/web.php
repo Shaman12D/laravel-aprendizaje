@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\Category_controller;
+use App\Http\Controllers\Dashboard\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::resource('post', PostController::class);
+    Route::resource('category', Category_controller::class);
 });
 
 Route::get('/dashboard', function () {
