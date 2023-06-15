@@ -17,17 +17,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
-Route::prefix('dashboard')->group(function () {
-    Route::resource('post', PostController::class);
-    Route::resource('category', Category_controller::class);
-});
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name("dashboard");
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::resources([
+        'post' => PostController::class,
+        'category' => Category_controller::class,
+    ]);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

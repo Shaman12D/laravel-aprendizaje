@@ -3,7 +3,7 @@
 @section('content')
 <a href="{{ route("category.create") }}">Crear</a>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Titulo</th>
