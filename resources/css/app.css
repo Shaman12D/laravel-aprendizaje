@@ -4,7 +4,7 @@
 
 /* tabla basica */
 table{
-    @apply table-auto
+    @apply table-auto w-full
 }
 
 .table th{
@@ -21,7 +21,45 @@ table{
 /* Fin de tabla basica */
 
 /* form */
-
 .form-control{
     @apply block rounded-sm shadow-sm bg-purple-400 w-full
 }
+
+label{
+    @apply mt-5 block
+}
+/* Fin del form */
+
+/* btn */
+.btn{
+    @apply border rounded px-3 py-2 text-white font-bold transition-all
+}
+.btn-success{
+    @apply border-green-400 hover:bg-white bg-green-400 inline-block
+}
+.btn-danger{
+    @apply border-red-600 hover:bg-white bg-red-600
+}
+.btn-warning{
+    @apply bg-yellow-600 border-yellow-600 hover:bg-white
+}
+.btn-primary{
+    @apply bg-blue-600 border-blue-600 hover:bg-white
+}
+/* Fin btn */
+
+/* card */
+.card{
+    @apply p-6 rounded shadow-sm
+}
+
+.card-white{
+    @apply bg-blue-950
+}
+/* Fin card */
+
+/* Base */
+h1{
+    @apply text-4xl mb-3
+}
+/* Fin base */

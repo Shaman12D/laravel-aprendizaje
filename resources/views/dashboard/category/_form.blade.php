@@ -5,4 +5,4 @@
 <label for="slug">Slug</label>
 <input type="text" class="form-control" name="slug" value="{{ old("slug", $category->slug)}}">
 <br>
-<button type="submit">Enviar</button>
+<button class="btn btn-success mt-2" type="submit">Enviar</button>

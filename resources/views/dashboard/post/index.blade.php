@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <a href="{{ route("post.create") }}">Crear</a>
+    <a class="btn btn-success mt-3" href="{{ route("post.create") }}">Crear</a>
 
-    <table class="table">
+    <table class="table mb-3">
         <thead>
             <tr>
                 <th>Titulo</th>
@@ -21,12 +21,12 @@
                     <td>{{ $p->category->title }}</td><!-- Variable de la tabla hija -->
                     <td>{{ $p->posted }}</td>
                     <td>
-                        <a href="{{ route("post.edit",$p) }}">Editar</a>
-                        <a href="{{ route("post.show",$p) }}">Mostrar</a>
+                        <a class="btn btn-warning mt-2" href="{{ route("post.edit",$p) }}">Editar</a>
+                        <a class="btn btn-primary mt-2" href="{{ route("post.show",$p) }}">Mostrar</a>
                         <form action="{{ route("post.destroy",$p) }}" method="POST">
                         @method("DELETE")
                         @csrf
-                            <button type="submit">Eliminar</button>
+                            <button class="btn btn-danger mt-2" type="submit">Eliminar</button>
                         </form>
                     </td>
                 </tr>
