@@ -45,4 +45,8 @@ Route::prefix('blog')->group(function () {
     });
 });
 
+Route::get('/vue/{n1?}', function (){//entre mas parametros se necesite se coloca otro parametro {n2?}
+    return view('vue');
+});
+
 require __DIR__.'/auth.php';
