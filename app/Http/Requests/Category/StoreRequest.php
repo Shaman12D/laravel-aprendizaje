@@ -13,7 +13,7 @@ class StoreRequest extends FormRequest
     {
         $this->merge([
             // 'slug' => Str::slug($this->title)
-            'slug' => str($this->slug )->slug()
+            'slug' => str($this->title )->slug()
         ]);
     }
 

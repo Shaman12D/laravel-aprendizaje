@@ -1,5 +1,6 @@
 //importación de terceros
 import { createApp } from 'vue';
+import '../../css/vue.css'
 import Oruga from '@oruga-ui/oruga-next'
 import '@oruga-ui/oruga-next/dist/oruga.css'
 import '@oruga-ui/oruga-next/dist/oruga-full.css'
