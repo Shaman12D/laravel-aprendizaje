@@ -6,3 +6,6 @@ h1{
     @apply text-center my-5
 }
 
+:root{
+    --oruga-modal-content-padding:0
+}

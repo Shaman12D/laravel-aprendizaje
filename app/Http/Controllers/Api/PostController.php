@@ -62,6 +62,15 @@ class PostController extends Controller
         return response()->json($post);
     }
 
+    public function upload(Request $request, Post $post)
+    {
+        $data["image"] = $filename = time().".".$request["image"]->getClientOriginalName();
+        $request->image->move(public_path("image/vue"), $filename);
+
+        $post->update($data);
+        return response()->json($post);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

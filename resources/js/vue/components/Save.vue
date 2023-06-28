@@ -1,5 +1,7 @@
 <template>
     <form @submit.prevent="submit">
+        <h1 v-if="post">Actualizar Post <span class="font-bold">{{ post.title }}</span></h1>
+        <h1 v-else>Crear Post</h1>
         <div class="grid grid-cols-2 gap-2">
             <o-field label="Título" :variant="errors.title ? 'danger' : 'primary'" :message="errors.title">
                 <o-input v-model="form.title" value=""></o-input>
@@ -21,8 +23,19 @@
                     <option value="not">Not</option>
                 </o-select>
             </o-field>
+            <div class="flex gap-4" v-if="post">
+                <o-upload v-model="file">
+                    <o-button tag="a" variant="primary">
+                        <o-icon icon="upload"></o-icon>
+                        <span>Click para cargar</span>
+                    </o-button>
+                </o-upload>
+
+                <o-button icon-left="upload" @click="upload">Subir</o-button>
+            </div>
         </div>
-            <o-button variant="primary" native-type="submit">Enviar</o-button>
+        <br/>
+        <o-button variant="primary" native-type="submit">Enviar</o-button>
     </form>
 </template>
 
@@ -45,7 +58,8 @@ export default {
                 category_id: "",
                 posted: "",
             },
-            post:""
+            post:"",
+            file:null,
         }
     },
     async mounted() {
@@ -70,6 +84,12 @@ export default {
                 return this.$axios.post("/api/post",
                     this.form
                 ).then(res => {
+                    this.$oruga.notification.open({
+                        message:'¡Registado!',
+                        duration: 4000,
+                        closable: true,
+                        position: "bottom-right",
+                    });
                     console.log(res);
                 }).catch(error => {
                     console.log(error.response.data);
@@ -94,11 +114,17 @@ export default {
                         this.errors.posted = error.response.data.posted[0]
                     }
                 })
-                
+
                 //actualizar
                 this.$axios.patch("/api/post/" + this.post.id,
                     this.form
                 ).then(res => {
+                    this.$oruga.notification.open({
+                        message:'¡Modificado!',
+                        duration: 4000,
+                        closable: true,
+                        position: "bottom-right",
+                    });
                     console.log(res);
                 }).catch(error => {
                 console.log(error.response.data);
@@ -122,6 +148,23 @@ export default {
                 if (error.response.data.posted) {
                     this.errors.posted = error.response.data.posted[0]
                 }
+            })
+        },
+        upload(){
+
+        // return console.log(this.file);
+
+        const formData=new FormData();
+        formData.append("image",this.file)
+
+        this.$axios.post("/api/post/upload/"+this.post.id,formData,{
+            headers:{
+                "content-type":"multipart/form-data"
+            }
+            }).then((res)=>{
+                console.log(res);
+            }).catch((error)=>{
+                console.log(error);
             })
         },
         getCategory() {
