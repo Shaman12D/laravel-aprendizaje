@@ -24,14 +24,31 @@
                 </o-select>
             </o-field>
             <div class="flex gap-4" v-if="post">
-                <o-upload v-model="file">
-                    <o-button tag="a" variant="primary">
-                        <o-icon icon="upload"></o-icon>
-                        <span>Click para cargar</span>
-                    </o-button>
-                </o-upload>
+                <o-field :message="fileError" >
+                    <o-upload v-model="file">
+                        <o-button tag="a" variant="primary">
+                            <o-icon icon="upload"></o-icon>
+                            <span>Click para cargar</span>
+                        </o-button>
+                    </o-upload>
+                </o-field>
 
                 <o-button icon-left="upload" @click="upload">Subir</o-button>
+            </div>
+
+            <div class="flex gap-4" v-if="post">
+                <o-field :message="fileError" >
+                    <o-upload v-model="filesDD" multiple drag-drop>
+                        <section>
+                            <o-icon icon="upload"></o-icon>
+                            <span>Drag and Drop para cargar</span>
+                        </section>
+                    </o-upload>
+                </o-field>
+
+                <span v-for="(file, index) in filesDD" :key="index">
+                    {{ file.name }}
+                </span>
             </div>
         </div>
         <br/>
@@ -60,6 +77,8 @@ export default {
             },
             post:"",
             file:null,
+            filesDD:[],
+            fileError: "",
         }
     },
     async mounted() {
@@ -153,6 +172,7 @@ export default {
         upload(){
 
         // return console.log(this.file);
+        this.fileError="";
 
         const formData=new FormData();
         formData.append("image",this.file)
@@ -164,7 +184,7 @@ export default {
             }).then((res)=>{
                 console.log(res);
             }).catch((error)=>{
-                console.log(error);
+                this.fileError = error.response.data.message;
             })
         },
         getCategory() {
@@ -184,5 +204,27 @@ export default {
             this.form.posted = this.post.posted;
         }
     },
-}
+    watch:{
+        filesDD:{
+            handler(val){
+                //return console.log(val[val.length-1]);
+
+                this.fileError = "";
+                const formData=new FormData();
+                formData.append("image",val[val.length-1])
+
+                this.$axios.post("/api/post/upload/"+this.post.id,formData,{
+                    headers:{
+                        "content-type":"multipart/form-data"
+                    }
+                    }).then((res)=>{
+                        console.log(res);
+                    }).catch((error)=>{
+                        this.fileError = error.response.data.message;
+                    })
+            },
+            deep: true
+        },
+    },
+};
 </script>

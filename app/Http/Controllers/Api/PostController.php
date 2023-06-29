@@ -7,6 +7,7 @@ use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -64,6 +65,12 @@ class PostController extends Controller
 
     public function upload(Request $request, Post $post)
     {
+        $request->validate([
+            'image' => "required|mimes:jpeg,png,gif|max:10240"
+        ]);
+
+        Storage::disk("public_upload")->delete("image/vue/".$post->image);
+
         $data["image"] = $filename = time().".".$request["image"]->getClientOriginalName();
         $request->image->move(public_path("image/vue"), $filename);
 
