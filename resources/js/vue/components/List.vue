@@ -59,11 +59,17 @@ export default {
             setTimeout(this.listPage, 100);
         },
         listPage() {
-            console.log("Click" + this.currentPage)
+            //console.log("Click" + this.currentPage)
+
+            const config={
+                headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                // headers: {Authorization: 'Bearer ' +this.$cookies.token}
+            };
+
             this.isLoading = "true";
-            this.$axios.get('/api/post?page=' + this.currentPage).then((res) => {
+            this.$axios.get('/api/post?page=' + this.currentPage, config).then((res) => {
                 this.posts = res.data;
-                console.log(this.posts);
+                //console.log(this.posts);
                 this.isLoading = false;
             });
         },
@@ -81,6 +87,7 @@ export default {
         },
     },
     async mounted() {
+        console.log(this.$cookies.get('auth'));
         this.listPage();
     },
 };
