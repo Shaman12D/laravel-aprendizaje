@@ -63,10 +63,17 @@ export default {
 
             const config={
                 headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+<<<<<<< HEAD
                 // headers: {Authorization: 'Bearer ' +this.$root.token}
             };
 
             this.isLoading = true;
+=======
+                // headers: {Authorization: 'Bearer ' +this.$cookies.token}
+            };
+
+            this.isLoading = "true";
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             this.$axios.get('/api/post?page=' + this.currentPage, config).then((res) => {
                 this.posts = res.data;
                 //console.log(this.posts);
@@ -87,8 +94,12 @@ export default {
         },
     },
     async mounted() {
+<<<<<<< HEAD
         // console.log('cookies');
         // console.log(this.$cookies.get('auth'));
+=======
+        console.log(this.$cookies.get('auth'));
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
         this.listPage();
     },
 };

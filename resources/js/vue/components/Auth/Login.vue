@@ -13,7 +13,11 @@
     export default{
         created(){
             if (this.$root.isLoggedIn) {
+<<<<<<< HEAD
                 this.$router.push({name:"list"});
+=======
+                this.$router.push({name:'list'});
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             }
         },
         methods: {
@@ -21,13 +25,20 @@
             this.errors.login="";
         },
         submit(){
+<<<<<<< HEAD
             this.cleanErrorsForm();
+=======
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             this.$axios.post('/api/user/login',this.form)
                 .then((res)=>{
                     console.log(res.data);
                     this.$root.setCookieAuth(res.data);
+<<<<<<< HEAD
                     //setTimeout(()=>(window.location.href="/vue/login"),1500);
                     setTimeout(()=>(window.location.href="/vue"),1500);
+=======
+                    setTimeout(()=>(window.location.href="/vue/login"),1500);
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
                     this.$oruga.notification.open({
                         message:'¡Ingresó!',
                         duration: 4000,

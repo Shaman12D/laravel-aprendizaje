@@ -3,9 +3,12 @@ import {createRouter, createWebHistory}  from 'vue-router'
 import List from "./components/List.vue"
 import Save from "./components/Save.vue"
 import Login from "./components/Auth/Login.vue"
+<<<<<<< HEAD
 
 // import { useCookies } from 'vue3-cookies'
 // const {cookies} = useCookies()
+=======
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
 
 const routes=[
     {

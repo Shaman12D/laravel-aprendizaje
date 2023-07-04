@@ -28,7 +28,11 @@ export default{
             isLoggedIn:false,
             user:"",
             token:"",
+<<<<<<< HEAD
         };
+=======
+        }
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
     },
     created(){
         if(window.Laravel.isLoggedIn){
@@ -38,6 +42,7 @@ export default{
         } else{
             const auth = this.$cookies.get("auth");
             if(auth){
+<<<<<<< HEAD
                 this.isLoggedIn = true;
                 this.user = auth.user;
                 this.token = auth.token;
@@ -49,21 +54,32 @@ export default{
                     this.setCookieAuth('');
                     window.location.href="/vue/login";
                 });
+=======
+                this.$axios.post("/api/user/token-check").then(() => {});
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             }
         }
     },
     methods:{
         logout(){
+<<<<<<< HEAD
             this.$axios.post('/api/user/logout',{
                 token: this.token,
             }).then((res)=>{
+=======
+            this.$axios.post('/api/user/logout').then((res)=>{
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
                 this.setCookieAuth('');
                 window.location.href="/vue/login";
             });
         },
         setCookieAuth(data){
             this.$cookies.set("auth", data);
+<<<<<<< HEAD
         },
+=======
+        }
+>>>>>>> 6117da840b5ecabe404521138f3b00772a834528
     },
 };
 </script>
