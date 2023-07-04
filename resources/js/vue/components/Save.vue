@@ -1,5 +1,7 @@
 <template>
     <form @submit.prevent="submit">
+        <h1 v-if="post">Actualizar Post <span class="font-bold">{{ post.title }}</span></h1>
+        <h1 v-else>Crear Post</h1>
         <div class="grid grid-cols-2 gap-2">
             <o-field label="Título" :variant="errors.title ? 'danger' : 'primary'" :message="errors.title">
                 <o-input v-model="form.title" value=""></o-input>
@@ -21,8 +23,36 @@
                     <option value="not">Not</option>
                 </o-select>
             </o-field>
+            <div class="flex gap-4" v-if="post">
+                <o-field :message="fileError" >
+                    <o-upload v-model="file">
+                        <o-button tag="a" variant="primary">
+                            <o-icon icon="upload"></o-icon>
+                            <span>Click para cargar</span>
+                        </o-button>
+                    </o-upload>
+                </o-field>
+
+                <o-button icon-left="upload" @click="upload">Subir</o-button>
+            </div>
+
+            <div class="flex gap-4" v-if="post">
+                <o-field :message="fileError" >
+                    <o-upload v-model="filesDD" multiple drag-drop>
+                        <section>
+                            <o-icon icon="upload"></o-icon>
+                            <span>Drag and Drop para cargar</span>
+                        </section>
+                    </o-upload>
+                </o-field>
+
+                <span v-for="(file, index) in filesDD" :key="index">
+                    {{ file.name }}
+                </span>
+            </div>
         </div>
-            <o-button variant="primary" native-type="submit">Enviar</o-button>
+        <br/>
+        <o-button variant="primary" native-type="submit">Enviar</o-button>
     </form>
 </template>
 
@@ -45,7 +75,10 @@ export default {
                 category_id: "",
                 posted: "",
             },
-            post:""
+            post:"",
+            file:null,
+            filesDD:[],
+            fileError: "",
         }
     },
     async mounted() {
@@ -66,10 +99,21 @@ export default {
         submit() {
             this.cleanErrorsForm();
 
+            const config={
+                headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                // headers: {Authorization: 'Bearer ' +this.$cookies.token}
+            };
+
             if(this.post == "" )
                 return this.$axios.post("/api/post",
                     this.form
                 ).then(res => {
+                    this.$oruga.notification.open({
+                        message:'¡Registado!',
+                        duration: 4000,
+                        closable: true,
+                        position: "bottom-right",
+                    });
                     console.log(res);
                 }).catch(error => {
                     console.log(error.response.data);
@@ -94,11 +138,17 @@ export default {
                         this.errors.posted = error.response.data.posted[0]
                     }
                 })
-                
+
                 //actualizar
                 this.$axios.patch("/api/post/" + this.post.id,
                     this.form
                 ).then(res => {
+                    this.$oruga.notification.open({
+                        message:'¡Modificado!',
+                        duration: 4000,
+                        closable: true,
+                        position: "bottom-right",
+                    });
                     console.log(res);
                 }).catch(error => {
                 console.log(error.response.data);
@@ -124,6 +174,24 @@ export default {
                 }
             })
         },
+        upload(){
+
+        // return console.log(this.file);
+        this.fileError="";
+
+        const formData=new FormData();
+        formData.append("image",this.file)
+
+        this.$axios.post("/api/post/upload/"+this.post.id,formData,{
+            headers:{
+                "content-type":"multipart/form-data"
+            }
+            }).then((res)=>{
+                console.log(res);
+            }).catch((error)=>{
+                this.fileError = error.response.data.message;
+            })
+        },
         getCategory() {
             this.$axios.get("/api/category/all").then(res => {
                 this.categories = res.data;
@@ -141,5 +209,27 @@ export default {
             this.form.posted = this.post.posted;
         }
     },
-}
+    watch:{
+        filesDD:{
+            handler(val){
+                //return console.log(val[val.length-1]);
+
+                this.fileError = "";
+                const formData=new FormData();
+                formData.append("image",val[val.length-1])
+
+                this.$axios.post("/api/post/upload/"+this.post.id,formData,{
+                    headers:{
+                        "content-type":"multipart/form-data"
+                    }
+                    }).then((res)=>{
+                        console.log(res);
+                    }).catch((error)=>{
+                        this.fileError = error.response.data.message;
+                    })
+            },
+            deep: true
+        },
+    },
+};
 </script>
