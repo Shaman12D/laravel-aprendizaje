@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container mx-auto">
         <o-modal v-model:active="confirmDeleteActive">
             <div class="p-4">
                 <p>¿Seguro que quieres eliminar el registro seleccionado?</p>
