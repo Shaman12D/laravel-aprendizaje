@@ -106,7 +106,7 @@ export default {
 
             if(this.post == "" )
                 return this.$axios.post("/api/post",
-                    this.form
+                    this.form, config
                 ).then(res => {
                     this.$oruga.notification.open({
                         message:'¡Registado!',
@@ -141,7 +141,7 @@ export default {
 
                 //actualizar
                 this.$axios.patch("/api/post/" + this.post.id,
-                    this.form
+                    this.form, config
                 ).then(res => {
                     this.$oruga.notification.open({
                         message:'¡Modificado!',
@@ -184,7 +184,9 @@ export default {
 
         this.$axios.post("/api/post/upload/"+this.post.id,formData,{
             headers:{
-                "content-type":"multipart/form-data"
+                "content-type":"multipart/form-data",
+                // headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                "Authorization": 'Bearer ' +this.$cookies.token
             }
             }).then((res)=>{
                 console.log(res);
@@ -193,11 +195,20 @@ export default {
             })
         },
         getCategory() {
-            this.$axios.get("/api/category/all").then(res => {
+            const config={
+                // headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                headers: {Authorization: 'Bearer ' +this.$cookies.token}
+            };
+
+            this.$axios.get("/api/category/all", config).then(res => {
                 this.categories = res.data;
             });
         },
         async getPost() {
+            const config={
+                // headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                headers: {Authorization: 'Bearer ' +this.$cookies.token}
+            };
             this.post = await this.$axios.get("/api/post/slug/" + this.$route.params.slug);
             this.post = this.post.data;
         },

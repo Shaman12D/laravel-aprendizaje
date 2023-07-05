@@ -3,12 +3,9 @@ import {createRouter, createWebHistory}  from 'vue-router'
 import List from "./components/List.vue"
 import Save from "./components/Save.vue"
 import Login from "./components/Auth/Login.vue"
-<<<<<<< HEAD
 
-// import { useCookies } from 'vue3-cookies'
-// const {cookies} = useCookies()
-=======
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
+import { useCookies } from 'vue3-cookies'
+const {cookies} = useCookies()
 
 const routes=[
     {
@@ -33,15 +30,15 @@ const router = createRouter({
     routes: routes
 })
 
-// router.beforeEach(async (to, from, next) =>{
-//     const auth = cookies.get('auth')
+router.beforeEach(async (to, from, next) =>{
+    const auth = cookies.get('auth')
 
-//     if (!auth && to.name != 'login') {
-//         return next({name:'login'})
-//     }
+    if (!auth && to.name != 'login') {
+        return next({name:'login'})
+    }
 
-//     return next()
+    return next()
 
-// })
+})
 
 export default router

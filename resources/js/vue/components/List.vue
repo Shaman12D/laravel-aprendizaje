@@ -62,18 +62,11 @@ export default {
             //console.log("Click" + this.currentPage)
 
             const config={
-                headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
-<<<<<<< HEAD
-                // headers: {Authorization: 'Bearer ' +this.$root.token}
+                // headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                headers: {Authorization: 'Bearer ' +this.$root.token}
             };
 
             this.isLoading = true;
-=======
-                // headers: {Authorization: 'Bearer ' +this.$cookies.token}
-            };
-
-            this.isLoading = "true";
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             this.$axios.get('/api/post?page=' + this.currentPage, config).then((res) => {
                 this.posts = res.data;
                 //console.log(this.posts);
@@ -81,9 +74,13 @@ export default {
             });
         },
         deletePost() {
+            const config={
+                // headers: { Authorization: `Bearer ${this.$cookies.get('auth').token}` },
+                headers: {Authorization: 'Bearer ' +this.$root.token}
+            };
             this.confirmDeleteActive=false;
             this.posts.data.splice(this.deletePostRow.index,1);
-            this.$axios.delete('/api/post/' + this.deletePostRow.row.id);
+            this.$axios.delete('/api/post/' + this.deletePostRow.row.id, config);
             this.$oruga.notification.open({
                 message:'¡Eliminado!',
                 duration: 4000,
@@ -94,12 +91,9 @@ export default {
         },
     },
     async mounted() {
-<<<<<<< HEAD
-        // console.log('cookies');
-        // console.log(this.$cookies.get('auth'));
-=======
+        
+         console.log('cookies');
         console.log(this.$cookies.get('auth'));
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
         this.listPage();
     },
 };

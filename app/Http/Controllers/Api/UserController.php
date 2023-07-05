@@ -28,7 +28,6 @@ class UserController extends Controller
     }
 
     function checkToken() {
-<<<<<<< HEAD
         try {
             [$id,$token] = explode('|',request('token'));
             $tokenHash = hash('sha256', $token);
@@ -43,28 +42,19 @@ class UserController extends Controller
                 ]);
             }
 
-            //dd($tokenModel->tokenable);
+            // dd($tokenModel->tokenable);
         } catch (\Throwable $th) {
         }
         return response()->json("Usuario invalido", 422);
     }
 
     public function logout(){
-        // dd(Auth::user()->tokens()->get());
-        [$id, $token] = explode('|',request('token'));
-        Auth::user()->tokens()->where('id', $id)->delete();
-=======
-        //28|dYltlPW9pRMPf8i24WNk5A3b5S16SVKwreLZUUYg
-        //266efa9702ab00674b5de046e99b1961009ac8816c4830f7007b9fe10d2c97d7
-        $token = request('token');
-        dd(hash('sha256', $token));
-        $tokenModel = PersonalAccessToken::where('token', $token)->first();
-        dd($tokenModel);
-    }
+        [$id,$token] = explode('|',request('token'));
+        if (Auth::user())
+            Auth::user()->tokens()->where('id', $id)->delete();
+        else
+            PersonalAccessToken::where('id', $id)->delete();
 
-    public function logout(){
-        //$user->tokens()->where('id', $user->id)->delete();
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
         session()->flush();
         return response()->json("Cierre de session");
     }

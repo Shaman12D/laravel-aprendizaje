@@ -4,8 +4,11 @@
         <!-- <save/> -->
         <header>
             <div class="flex gap-4 bg-gray-400">
-                <router-link :to="{name:'login'}">Login</router-link>
-                <o-button variant="danger" @click="logout">
+                <router-link v-if="!$root.isLoggedIn" :to="{name:'login'}">Login</router-link>
+                <p v-if="$root.isLoggedIn">
+                    {{ $root.user.name }}
+                </p>
+                <o-button v-if="$root.isLoggedIn" variant="danger" @click="logout">
                     Logout
                 </o-button>
             </div>
@@ -28,11 +31,7 @@ export default{
             isLoggedIn:false,
             user:"",
             token:"",
-<<<<<<< HEAD
         };
-=======
-        }
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
     },
     created(){
         if(window.Laravel.isLoggedIn){
@@ -42,44 +41,32 @@ export default{
         } else{
             const auth = this.$cookies.get("auth");
             if(auth){
-<<<<<<< HEAD
                 this.isLoggedIn = true;
                 this.user = auth.user;
                 this.token = auth.token;
                 this.$axios.post("/api/user/token-check",{
                     token: auth.token,
                 })
-                //.then(() => {})
+                .then(() => {})
                 .catch(() => {
                     this.setCookieAuth('');
                     window.location.href="/vue/login";
                 });
-=======
-                this.$axios.post("/api/user/token-check").then(() => {});
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
             }
         }
     },
     methods:{
         logout(){
-<<<<<<< HEAD
-            this.$axios.post('/api/user/logout',{
-                token: this.token,
+            this.$axios.post('/api/user/logout', {
+                token: this.token
             }).then((res)=>{
-=======
-            this.$axios.post('/api/user/logout').then((res)=>{
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
                 this.setCookieAuth('');
                 window.location.href="/vue/login";
             });
         },
         setCookieAuth(data){
             this.$cookies.set("auth", data);
-<<<<<<< HEAD
         },
-=======
-        }
->>>>>>> 6117da840b5ecabe404521138f3b00772a834528
     },
 };
 </script>
