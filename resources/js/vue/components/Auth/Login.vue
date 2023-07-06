@@ -9,7 +9,7 @@
             <o-field :variant="errors.login?'danger':'primary'" :message="errors.login" label="Password">
                 <o-input v-model="form.password" type="password"></o-input>
             </o-field>
-            <o-button class="float-right" variant="primary" native-type="submit">Send</o-button>
+            <o-button class="float-right" variant="primary" native-type="submit" :disabled="disabledBottom">Send</o-button>
         </form>
     </div>
 </div>
@@ -26,13 +26,17 @@
             this.errors.login="";
         },
         submit(){
+            this.disabledBottom=true;
             this.cleanErrorsForm();
             this.$axios.post('/api/user/login',this.form)
                 .then((res)=>{
                     console.log(res.data);
                     this.$root.setCookieAuth(res.data);
                     //setTimeout(()=>(window.location.href="/vue/login"),1500);
-                    setTimeout(()=>(window.location.href="/vue"),1500);
+                    setTimeout(()=>{
+                        window.location.href="/vue"
+                        this.disabledBottom=false;
+                    },1500);
                     this.$oruga.notification.open({
                         message:'¡Ingresó!',
                         duration: 4000,
@@ -40,6 +44,7 @@
                         position: "bottom-right",
                     });
                 }).catch((error)=>{
+                    this.disabledBottom=false;
                     console.log(error);
                     if(error.response.data){
                         this.errors.login=error.response.data;
@@ -53,6 +58,7 @@
                     email:'',
                     password:'',
                 },
+                disabledBottom: false,
                 errors:{
                     login:"",
                 },

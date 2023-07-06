@@ -17,22 +17,26 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="max-w-7x1 mx-auto py-4 px-4 sm:px-6">
-                            <router-link class="inline-flex pt-1 uppercase border-b-2 text-sm leading-5 mx-3 px-4 py-1 
-                            text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700 
-                            hover:-translate-y-1 duration-150 transition-all" v-if="!$root.isLoggedIn" :to="{name:'login'}">Login</router-link>
-                            <router-link class="inline-flex pt-1 uppercase border-b-2 text-sm leading-5 mx-3 px-4 py-1 
-                            text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700 
-                            hover:-translate-y-1 duration-150 transition-all" v-if="$root.isLoggedIn" :to="{name:'login'}">Post</router-link>
-                            <o-button v-if="$root.isLoggedIn" variant="danger" @click="logout">
-                            Logout
-                            </o-button>
-                            <div class="rounded-full w-9 h-9 bg-blue-300 text-center p-1 font-bold">
-                                CD
+                        <div class="w-full flex py-4 px-4 sm:px-6 justify-between items-center">
+                            <div class="flex h-9 items-center">
+                                <router-link class="inline-flex pt-1 uppercase border-b-2 text-sm leading-5 mx-3 px-4 py-1
+                                text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700
+                                hover:-translate-y-1 duration-150 transition-all" v-if="!$root.isLoggedIn" :to="{name:'login'}">Login</router-link>
+                                <router-link class="inline-flex pt-1 uppercase border-b-2 text-sm leading-5 mx-3 px-4 py-1
+                                text-gray-600 text-center font-bold hover:text-gray-900 hover:border-gray-700
+                                hover:-translate-y-1 duration-150 transition-all" v-if="$root.isLoggedIn" :to="{name:'login'}">Post</router-link>
+                                <o-button v-if="$root.isLoggedIn" variant="danger" @click="logout">
+                                Logout
+                                </o-button>
                             </div>
-                            <p v-if="$root.isLoggedIn">
-                                {{ $root.user.name }}
-                            </p>
+                            <div class="flex flex-col items-center" v-if="$root.isLoggedIn">
+                                <div class="rounded-full w-9 h-9 bg-blue-600 text-center p-1 font-bold">
+                                    {{ $root.user.name.substr(0,2).toUpperCase() }}
+                                </div>
+                                <p>
+                                    {{ $root.user.name.substr(0,7)  }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </header>
