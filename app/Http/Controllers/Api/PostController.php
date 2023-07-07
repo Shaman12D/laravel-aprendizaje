@@ -7,6 +7,7 @@ use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -14,6 +15,26 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    public function all_cache(){
+        // return Cache::remember('post_all_cache_3', now()->addMinutes(10), function () {
+        //     return response()->json(Post::all());
+        // });
+
+        return response()->json(Cache::remember('post_all_cache_2', now()->addMinutes(10), function () {
+            return Post::all();
+        }));
+
+        // if(Cache::has('post_all_cache')){
+        //     return response()->json(Cache::get('post_all_cache'));
+        // } else {
+        //     $posts=Post::all();
+        //     Cache::put('post_all_cache',$posts);
+        //     return response()->json($posts);
+        // }
+    }
+
     public function index()
     {
         return response()->json(Post::with('category')->paginate(5));

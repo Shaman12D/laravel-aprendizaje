@@ -49,4 +49,10 @@ Route::get('/vue/{n1?}', function (){//entre mas parametros se necesite se coloc
     return view('vue');
 });
 
+Route::get('/test',function (){
+    return [
+        'Laravel' => app()->version()
+    ];
+});
+
 require __DIR__.'/auth.php';

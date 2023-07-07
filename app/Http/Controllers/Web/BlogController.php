@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BlogController extends Controller
 {
@@ -13,7 +14,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $posts=Post::where("posted","yes")->paginate(2);
+        $posts=Post::where("posted","yes")->paginate(5);
         return view("web.blog.index",compact("posts"));
     }
 
@@ -22,6 +23,14 @@ class BlogController extends Controller
      */
     public function show(post $post)
     {
-        return view("web.blog.show", compact('post'));
+        if(Cache::has('post_show_'.$post->id)){
+            return Cache::get('post_show_'.$post->id);
+        } else {
+            $cacheView = view("web.blog.show", compact('post'))->render();
+            Cache::put('post_show_'.$post->id,$cacheView);
+            return $cacheView;
+        }
+
+        //return view("web.blog.show", compact('post'));
     }
 }
