@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('category/all', [CategoryController::class, 'all']);
 
     Route::resource('category', CategoryController::class)->except(["create", "edit"]);
-    Route::resource('post', PostController::class)->except(["create", "edit"]);
+    Route::resource('post', PostController::class)->except(["create", "edit", "all_cache"]);
 
     Route::get('post/all', [PostController::class, 'all']);
     Route::get('post/slug/{post:slug}', [PostController::class, 'slug']);
@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 });
 
-Route::get('post/all_cache', [PostController::class, 'all_cache']);
+Route::get('post/all_cache', [PostController::class, 'all_cache']);// funcionará si se desactiva resource [category, post] del middleware
 
 // Route::get('/vue', function (){
     //     return view('vue');

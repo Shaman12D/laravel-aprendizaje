@@ -7,6 +7,7 @@ use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -15,13 +16,13 @@ class PostController extends Controller
      */
     public function index()
     {
-
         //return redirect("/post/create");
         //$posts = Post::get();
         //return redirect()->route('post.create');
         //return to_route("post.create");
-        
+
         $posts = Post::paginate(10);
+        dd(Gate::allows('view', $posts[0]));
         return view('dashboard.post.index', compact('posts'));
     }
 
@@ -54,7 +55,7 @@ class PostController extends Controller
         //     "posted"=>"required"
         // ]);
 
-        //$validated = $request->validate(StoreRequest::myRules()); 
+        //$validated = $request->validate(StoreRequest::myRules());
 
         //dd($validated);
 
@@ -87,9 +88,13 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if(!Gate::allows('update-post',$post)){
+            return abort(403);
+        }
+
         $categories=Category::pluck('id','title');
         $status = "Ok lo editaste";
-        echo view('dashboard.post.edit',compact('categories', 'post'));
+        return view('dashboard.post.edit',compact('categories', 'post'));
 
     }
 
@@ -98,6 +103,10 @@ class PostController extends Controller
      */
     public function update(PutRequest $request, Post $post)
     {
+        if(!Gate::allows('update-post',$post)){
+            return abort(403);
+        }
+
         $data = $request->validated();
         if(isset($data["image"])){
             $data["image"] = $filename = time().".".$data["image"]->getClientOriginalName();

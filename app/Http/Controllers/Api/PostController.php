@@ -22,7 +22,7 @@ class PostController extends Controller
         //     return response()->json(Post::all());
         // });
 
-        return response()->json(Cache::remember('post_all_cache_2', now()->addMinutes(10), function () {
+        return response()->json(Cache::remember('post_all_cache', now()->addMinutes(10), function () {
             return Post::all();
         }));
 

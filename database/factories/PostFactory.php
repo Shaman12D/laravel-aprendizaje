@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,6 +17,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        Post::truncate();
         fake();
         $name = $this->faker->sentence;
         return [
@@ -26,6 +28,8 @@ class PostFactory extends Factory
             'category_id' => $this->faker->randomElement([1,2,3,5,7,13]),
             'posted' => $this->faker->randomElement(['yes','not']),
             'image' => $this->faker->imageUrl(),
+            'user_id' => $this->faker->randomElement([1,2]),
+
         ];
     }
 }
