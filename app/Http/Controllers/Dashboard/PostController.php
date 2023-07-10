@@ -7,6 +7,8 @@ use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -22,7 +24,9 @@ class PostController extends Controller
         //return to_route("post.create");
 
         $posts = Post::paginate(10);
-        dd(Gate::allows('view', $posts[0]));
+        if(!Gate::allows('index', $posts[0])){
+            abort(403);
+        }
         return view('dashboard.post.index', compact('posts'));
     }
 
@@ -33,6 +37,9 @@ class PostController extends Controller
     {
         $categories=Category::pluck('id','title');
         $post=new Post();
+        if(!Gate::allows('create', $post)){
+            abort(403);
+        }
         //dd($categories);
         echo view('dashboard.post.create',compact('categories', 'post'));
     }
@@ -71,7 +78,12 @@ class PostController extends Controller
         // $data=$request->validated();
         // $data['slug']=Str::slug($data['title']);
         // dd($data);
-        Post::create($request->validated());
+        $post = new Post($request->validated());
+
+        if(!Gate::allows('create', $post)){
+            abort(403);
+        }
+        Auth::user()->posts()->save($post);
         return to_route("post.index")->with('status',"Registro creado.");
     }
 
@@ -80,6 +92,48 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        //TESTING
+        // if (Gate::any(['update','view'], $post)) {
+        //     dd(true);
+        // }
+
+        // if (Gate::none(['update','view'], $post)) {
+        //     dd(true);
+        // }
+
+        // if (Auth::user()->can('update', $post)) {
+        //     dd(true);
+        // }
+
+        // if (Gate::forUser(User::find(2))->allows('update', $post)){
+        //     dd(true);
+        // }
+
+        // Gate::allowIf(function(User $user) {
+        //     return !$user->isAdmin();
+        // });
+
+        // Gate::allowIf(
+        //     fn (User $user) =>
+        //     $user->isAdmin()
+        // );
+
+        // Gate::denyIf(
+        //     fn (User $user) =>
+        //     !$user->isAdmin()
+        // );
+
+        // if (Auth::user()->isAdmin()){
+        //     abort(403);
+        // }
+
+        Gate::authorize('index', $post);
+
+        //END TESTING
+
+        // if(!Gate::allows('view', $post)){
+        //     abort(403);
+        // }
         return view("dashboard.post.show",compact('post'));
     }
 
@@ -88,7 +142,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if(!Gate::allows('update-post',$post)){
+        // if(!Gate::allows('update-post',$post)){
+        //     return abort(403);
+        // }
+
+        if(!Gate::allows('update',$post)){
             return abort(403);
         }
 
@@ -103,7 +161,11 @@ class PostController extends Controller
      */
     public function update(PutRequest $request, Post $post)
     {
-        if(!Gate::allows('update-post',$post)){
+        // if(!Gate::allows('update-post',$post)){
+        //     return abort(403);
+        // }
+
+        if(!Gate::allows('update',$post)){
             return abort(403);
         }
 
@@ -123,6 +185,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if(!Gate::allows('delete',$post)){
+            return abort(403);
+        }
         $post->delete();
         return to_route("post.index")->with('status',"Registro eliminado.");
     }

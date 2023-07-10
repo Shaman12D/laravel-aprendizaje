@@ -16,6 +16,19 @@ class PostPolicy
     //     //
     // }
 
+    public function before(User $user,string $ability): bool|null
+    {
+        if($user->isAdmin()){
+            return true;
+        }
+        return false;
+    }
+
+    public function index(/*User $user, Post $post*/): bool
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can view the model.
      */
@@ -39,6 +52,12 @@ class PostPolicy
     {
         return $user->id == $post->user_id;
     }
+
+    // public function update(User $user, Post $post): Response
+    // {
+    //     //return $user->id == $post->user_id;
+    //     return $user->id == $post->user_id ? Response::allow() : Response::deny('Actualización no encontrada', 403);
+    // }
 
     /**
      * Determine whether the user can delete the model.
